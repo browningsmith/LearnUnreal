@@ -5,10 +5,14 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
 
-    PrintLine("Hello There!");
+    PrintLine(TEXT(
+        "Welcome to Bull Cows!\n"
+        "Press ENTER to continue..."
+    ));
 }
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
 {
     ClearScreen();
+    FString HiddenWord = TEXT("studio");
 }
