@@ -19,37 +19,7 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
     }
     else
     {
-        PrintLine(TEXT("You guessed ") + Input);
-    
-        if (Input == HiddenWord)
-        {
-            PrintLine(TEXT("That is correct! You Win!"));
-            EndGame();
-        }
-        else
-        {
-            PrintLine(TEXT("That is incorrect, you fucking loser!"));
-
-            if (Input.Len() != HiddenWord.Len())
-            {
-                PrintLine(TEXT("The Hidden Word has %i letters."), HiddenWord.Len());
-            }
-            else
-            {
-                PrintLine(TEXT("You lost a life like an idiot!"));
-                --Lives;
-            }
-
-            if (Lives <= 0)
-            {
-                PrintLine(TEXT("Aaaand you lost. What a fucking surprise."));
-                EndGame();
-            }
-            else
-            {
-                PrintLine(TEXT("You have %i lives left."), Lives);
-            }
-        }
+        ProcessGuess(Input);
     }  
 }
 
@@ -75,4 +45,42 @@ void UBullCowCartridge::EndGame()
 {
     bGameIsOver = true;
     PrintLine(TEXT("GAME OVER\nPress ENTER to play again you\nfucking no life bitch."));
+}
+
+void UBullCowCartridge::ProcessGuess(const FString& Guess)
+{
+    PrintLine(TEXT("You guessed ") + Guess);
+    
+    if (Guess == HiddenWord)
+    {
+        PrintLine(TEXT("That is correct! You Win!"));
+        EndGame();
+        return;
+    }
+
+    PrintLine(TEXT("That is incorrect, you fucking loser!"));
+
+    if (Guess.Len() != HiddenWord.Len())
+    {
+        PrintLine(TEXT("The Hidden Word has %i letters."), HiddenWord.Len());
+    }
+    else
+    {
+        PrintLine(TEXT("You lost a life like an idiot!"));
+        --Lives;
+    }
+
+    if (Lives <= 0)
+    {
+        ClearScreen();
+        PrintLine(
+            TEXT("Aaaand you lost. What a fucking surprise.\nThe hidden word was %s."),
+            *HiddenWord
+        );
+        EndGame();
+    }
+    else
+    {
+        PrintLine(TEXT("You have %i lives left."), Lives);
+    }
 }
