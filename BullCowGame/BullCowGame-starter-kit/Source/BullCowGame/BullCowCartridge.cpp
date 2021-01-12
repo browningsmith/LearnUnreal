@@ -5,8 +5,7 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
 
-    // Initialize hidden word
-    HiddenWord = TEXT("studio");
+    SetupGame();
 
     PrintLine(TEXT(
         "Welcome to Bull Cows!\n"
@@ -22,10 +21,29 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
     
     if (Input == HiddenWord)
     {
-        PrintLine("That is correct!");
+        PrintLine(TEXT("That is correct!"));
     }
     else
     {
-        PrintLine("That is incorrect, you fking loser!");
+        PrintLine(TEXT("That is incorrect, you fucking loser!"));
+
+        if (Input.Len() != HiddenWord.Len())
+        {
+            PrintLine(TEXT("The Hidden Word has 6 letters."));
+        }
+        else
+        {
+            PrintLine(TEXT("You lose a life!"));
+            Lives--;
+        }
+        
     }
+
+    // Check if Lives is still greater than 0
+}
+
+void UBullCowCartridge::SetupGame()
+{
+    HiddenWord = TEXT("studio");
+    Lives = 6; // Same as length of HiddenWord
 }
