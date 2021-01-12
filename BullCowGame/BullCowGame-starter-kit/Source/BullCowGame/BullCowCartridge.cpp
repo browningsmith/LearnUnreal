@@ -5,6 +5,9 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
 
+    // Initialize hidden word
+    HiddenWord = TEXT("studio");
+
     PrintLine(TEXT(
         "Welcome to Bull Cows!\n"
         "Try to guess the 6 letter word.\n"
@@ -15,7 +18,6 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
 {
     ClearScreen();
-    FString HiddenWord = TEXT("studio");
     PrintLine(TEXT("You guessed ") + Input);
     
     if (Input == HiddenWord)
@@ -24,6 +26,6 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
     }
     else
     {
-        PrintLine("That is incorrect, you fucking loser!");
+        PrintLine("That is incorrect, you fking loser!");
     }
 }
