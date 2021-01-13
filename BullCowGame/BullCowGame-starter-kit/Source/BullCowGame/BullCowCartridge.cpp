@@ -39,6 +39,8 @@ void UBullCowCartridge::SetupGame()
         HiddenWord.Len(),
         Lives
     );
+
+    const TCHAR HiddenWordArray[] = TEXT("studio");
 }
 
 void UBullCowCartridge::EndGame()
@@ -53,6 +55,7 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     
     if (Guess == HiddenWord)
     {
+        ClearScreen();
         PrintLine(TEXT("That is correct! You Win!"));
         EndGame();
         return;
@@ -83,4 +86,25 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     {
         PrintLine(TEXT("You have %i lives left."), Lives);
     }
+}
+
+bool UBullCowCartridge::IsIsogram(const FString& Word)
+{
+    for (int32 I = 0; I < Word.Len(); I++)
+    {
+        for (int32 J = 0; J < Word.Len(); J++)
+        {
+            if (I == J)
+            {
+                continue;
+            }
+
+            if (Word[I] == Word[J])
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
