@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
-#include "Math/UnrealMathUtility.h"
 #include "BullCowCartridge.h"
 
 void UBullCowCartridge::BeginPlay() // When the game starts
@@ -12,23 +11,19 @@ void UBullCowCartridge::BeginPlay() // When the game starts
     GetValidWords();
 
     SetupGame();
-
-    // PrintLine(TEXT("The number of valid words is %i..."), ValidWordList.Num());
 }
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
 {   
-    PrintLine(TEXT("%i"), FMath::RandHelper(10));
-    
-    // if (bGameIsOver)
-    // {
-    //     ClearScreen();
-    //     SetupGame();
-    // }
-    // else
-    // {
-    //     ProcessGuess(Input);
-    // }  
+    if (bGameIsOver)
+    {
+        ClearScreen();
+        SetupGame();
+    }
+    else
+    {
+        ProcessGuess(Input);
+    }  
 }
 
 void UBullCowCartridge::LoadWordList()
@@ -53,7 +48,8 @@ void UBullCowCartridge::GetValidWords()
 
 void UBullCowCartridge::SetupGame()
 {
-    HiddenWord = TEXT("studio");
+    HiddenWord = ValidWordList[FMath::RandHelper(ValidWordList.Num())]; // Select a random word from ValidWordList
+    PrintLine(TEXT("The hidden word is %s"), *HiddenWord);
     Lives = HiddenWord.Len();
     bGameIsOver = false;
 
