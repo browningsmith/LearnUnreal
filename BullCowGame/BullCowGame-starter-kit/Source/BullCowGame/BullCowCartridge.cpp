@@ -12,15 +12,26 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
 {   
-    if (bGameIsOver)
+    PrintLine(TEXT("You guessed: %s"), *Input);
+    if (IsIsogram(Input))
     {
-        ClearScreen();
-        SetupGame();
+        PrintLine(TEXT("That IS an isogram"));
     }
     else
     {
-        ProcessGuess(Input);
-    }  
+        PrintLine(TEXT("That is NOT an isogram"));
+    }
+    
+    
+    // if (bGameIsOver)
+    // {
+    //     ClearScreen();
+    //     SetupGame();
+    // }
+    // else
+    // {
+    //     ProcessGuess(Input);
+    // }  
 }
 
 void UBullCowCartridge::SetupGame()
@@ -67,6 +78,10 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     {
         PrintLine(TEXT("The Hidden Word has %i letters."), HiddenWord.Len());
     }
+    else if (!IsIsogram(Guess))
+    {
+        PrintLine(TEXT("The Hidden Word has no repeating letters."));
+    }
     else
     {
         PrintLine(TEXT("You lost a life like an idiot!"));
@@ -88,11 +103,11 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     }
 }
 
-bool UBullCowCartridge::IsIsogram(const FString& Word)
+bool UBullCowCartridge::IsIsogram(const FString& Word) const
 {
     for (int32 I = 0; I < Word.Len(); I++)
     {
-        for (int32 J = 0; J < Word.Len(); J++)
+        for (int32 J = I + 1; J < Word.Len(); J++)
         {
             if (I == J)
             {
