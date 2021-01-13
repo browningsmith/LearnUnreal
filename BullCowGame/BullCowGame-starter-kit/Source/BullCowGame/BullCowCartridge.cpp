@@ -49,7 +49,7 @@ void UBullCowCartridge::GetValidWords()
 void UBullCowCartridge::SetupGame()
 {
     HiddenWord = ValidWordList[FMath::RandHelper(ValidWordList.Num())]; // Select a random word from ValidWordList
-    PrintLine(TEXT("The hidden word is %s"), *HiddenWord);
+    // PrintLine(TEXT("The hidden word is %s"), *HiddenWord);
     Lives = HiddenWord.Len();
     bGameIsOver = false;
 
