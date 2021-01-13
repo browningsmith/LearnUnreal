@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "BullCowCartridge.h"
+#include "HiddenWordList.h"
 
 void UBullCowCartridge::BeginPlay() // When the game starts
 {
@@ -12,26 +13,15 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
 {   
-    PrintLine(TEXT("You guessed: %s"), *Input);
-    if (IsIsogram(Input))
+    if (bGameIsOver)
     {
-        PrintLine(TEXT("That IS an isogram"));
+        ClearScreen();
+        SetupGame();
     }
     else
     {
-        PrintLine(TEXT("That is NOT an isogram"));
-    }
-    
-    
-    // if (bGameIsOver)
-    // {
-    //     ClearScreen();
-    //     SetupGame();
-    // }
-    // else
-    // {
-    //     ProcessGuess(Input);
-    // }  
+        ProcessGuess(Input);
+    }  
 }
 
 void UBullCowCartridge::SetupGame()
