@@ -24,7 +24,7 @@ public:
 	// Your declarations go below!
 private:
 
-	FString HiddenWord;
+	FString* HiddenWord;
 	int32 Lives;
 	bool bGameIsOver;
 	TArray<FString> WordList;

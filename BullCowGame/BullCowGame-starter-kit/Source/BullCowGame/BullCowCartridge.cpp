@@ -48,9 +48,9 @@ void UBullCowCartridge::GetValidWords()
 
 void UBullCowCartridge::SetupGame()
 {
-    HiddenWord = ValidWordList[FMath::RandHelper(ValidWordList.Num())]; // Select a random word from ValidWordList
-    // PrintLine(TEXT("The hidden word is %s"), *HiddenWord);
-    Lives = HiddenWord.Len();
+    HiddenWord = &ValidWordList[FMath::RandHelper(ValidWordList.Num())]; // Select a random word from ValidWordList
+    // PrintLine(TEXT("The hidden word is %s"), **HiddenWord);
+    Lives = (*HiddenWord).Len();
     bGameIsOver = false;
 
     PrintLine(
@@ -60,7 +60,7 @@ void UBullCowCartridge::SetupGame()
             "You have %i lives left.\n"
             "Press ENTER after you type your guess..."
         ),
-        HiddenWord.Len(),
+        (*HiddenWord).Len(),
         Lives
     );
 
@@ -77,7 +77,7 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
 {
     PrintLine(TEXT("You guessed ") + Guess);
     
-    if (Guess == HiddenWord)
+    if (Guess == *HiddenWord)
     {
         ClearScreen();
         PrintLine(TEXT("That is correct! You Win!"));
@@ -87,9 +87,9 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
 
     PrintLine(TEXT("That is incorrect, you fucking loser!"));
 
-    if (Guess.Len() != HiddenWord.Len())
+    if (Guess.Len() != (*HiddenWord).Len())
     {
-        PrintLine(TEXT("The Hidden Word has %i letters."), HiddenWord.Len());
+        PrintLine(TEXT("The Hidden Word has %i letters."), (*HiddenWord).Len());
     }
     else if (!IsIsogram(Guess))
     {
@@ -106,7 +106,7 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
         ClearScreen();
         PrintLine(
             TEXT("Aaaand you lost. What a fucking surprise.\nThe hidden word was %s."),
-            *HiddenWord
+            **HiddenWord
         );
         EndGame();
     }
