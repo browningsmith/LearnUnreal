@@ -14,6 +14,8 @@ class BULLCOWGAME_API UBullCowCartridge : public UCartridge
 public:
 	virtual void BeginPlay() override;
 	virtual void OnInput(const FString& Input) override;
+	void LoadWordList();
+	void GetValidWords();
 	void SetupGame();
 	void EndGame();
 	void ProcessGuess(const FString& Guess);
@@ -26,4 +28,5 @@ private:
 	int32 Lives;
 	bool bGameIsOver;
 	TArray<FString> WordList;
+	TArray<FString> ValidWordList;
 };
