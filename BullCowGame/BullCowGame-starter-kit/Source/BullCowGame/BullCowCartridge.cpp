@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "Math/UnrealMathUtility.h"
 #include "BullCowCartridge.h"
 
 void UBullCowCartridge::BeginPlay() // When the game starts
@@ -12,23 +13,22 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 
     SetupGame();
 
-    for (int32 I = 0; I < ValidWordList.Num(); I++)
-    {
-        PrintLine(TEXT("%s."), *ValidWordList[I]);
-    }
+    // PrintLine(TEXT("The number of valid words is %i..."), ValidWordList.Num());
 }
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
 {   
-    if (bGameIsOver)
-    {
-        ClearScreen();
-        SetupGame();
-    }
-    else
-    {
-        ProcessGuess(Input);
-    }  
+    PrintLine(TEXT("%i"), FMath::RandHelper(10));
+    
+    // if (bGameIsOver)
+    // {
+    //     ClearScreen();
+    //     SetupGame();
+    // }
+    // else
+    // {
+    //     ProcessGuess(Input);
+    // }  
 }
 
 void UBullCowCartridge::LoadWordList()
@@ -39,13 +39,13 @@ void UBullCowCartridge::LoadWordList()
 
 void UBullCowCartridge::GetValidWords()
 {
-    for (int32 I = 0; I < WordList.Num(); I++)
+    for (FString Word : WordList)
     {
-        if (WordList[I].Len() >= 4 && WordList[I].Len() <= 8)
+        if (Word.Len() >= 4 && Word.Len() <= 8)
         {
-            if (IsIsogram(WordList[I]))
+            if (IsIsogram(Word))
             {
-                ValidWordList.Emplace(WordList[I]);
+                ValidWordList.Emplace(Word);
             }
         }
     }
