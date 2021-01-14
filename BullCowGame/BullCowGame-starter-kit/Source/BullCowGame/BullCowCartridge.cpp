@@ -90,16 +90,17 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     if (Guess.Len() != (*HiddenWord).Len())
     {
         PrintLine(TEXT("The Hidden Word has %i letters."), (*HiddenWord).Len());
+        return;
     }
-    else if (!IsIsogram(Guess))
+
+    if (!IsIsogram(Guess))
     {
         PrintLine(TEXT("The Hidden Word has no repeating letters."));
+        return;
     }
-    else
-    {
-        PrintLine(TEXT("You lost a life like an idiot!"));
-        --Lives;
-    }
+
+    PrintLine(TEXT("You lost a life like an idiot!"));
+    --Lives;
 
     if (Lives <= 0)
     {
@@ -109,11 +110,14 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
             **HiddenWord
         );
         EndGame();
+        return;
     }
-    else
-    {
-        PrintLine(TEXT("You have %i lives left."), Lives);
-    }
+
+    FBullCowCount Count;
+    GetBullCows(Guess, Count);
+    PrintLine(TEXT("You have %i Bulls and %i Cows."), Count.Bulls, Count.Cows);
+
+    PrintLine(TEXT("You have %i lives left."), Lives);
 }
 
 bool UBullCowCartridge::IsIsogram(const FString& Word) const
@@ -135,4 +139,28 @@ bool UBullCowCartridge::IsIsogram(const FString& Word) const
     }
 
     return true;
+}
+
+void UBullCowCartridge::GetBullCows(const FString& Guess, FBullCowCount& OutBullCowCount) const
+{
+    OutBullCowCount.Bulls = 0;
+    OutBullCowCount.Cows = 0;
+
+    for (int32 I = 0; I < Guess.Len(); I++)
+    {
+        if (Guess[I] == (*HiddenWord)[I])
+        {
+            ++OutBullCowCount.Bulls;
+            continue;
+        }
+
+        for (int32 J = 0; J < Guess.Len(); J++)
+        {
+            if (Guess[I] == (*HiddenWord)[J])
+            {
+                ++OutBullCowCount.Cows;
+                break;
+            }
+        }
+    }
 }
