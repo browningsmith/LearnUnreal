@@ -19,8 +19,9 @@ void UWorldPosition::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	UE_LOG(LogTemp, Display, TEXT("Hello in Gray!"));
+	UE_LOG(LogTemp, Warning, TEXT("Hello in Yellow!"));
+	UE_LOG(LogTemp, Error, TEXT("Hello in Red!"));
 }
 
 
