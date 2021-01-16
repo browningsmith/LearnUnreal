@@ -41,11 +41,12 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 	if (PressurePlate && PressurePlate->IsOverlappingActor(ActorThatOpensDoor))
 	{
-		CloseDoor(DeltaTime);
-	}
-	else
-	{
 		OpenDoor(DeltaTime);
+		DoorLastOpened = GetWorld()->GetTimeSeconds();
+	}
+	else if (GetWorld()->GetTimeSeconds() > DoorLastOpened + DoorOpenDelay)
+	{
+		CloseDoor(DeltaTime);
 	}
 }
 

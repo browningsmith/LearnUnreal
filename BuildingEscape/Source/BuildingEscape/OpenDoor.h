@@ -28,7 +28,11 @@ public:
 	void CloseDoor(float DeltaTime);
 
 private:
-	float StartingYaw = 0.f;
+	float StartingYaw;
+	float DoorLastOpened = 0.f;
+
+	UPROPERTY(EditAnywhere)
+	float DoorOpenDelay = 3.f;
 
 	UPROPERTY(EditAnywhere)
 	float TargetYaw = 90.f;
