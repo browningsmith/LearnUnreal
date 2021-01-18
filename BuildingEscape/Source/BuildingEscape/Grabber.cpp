@@ -1,7 +1,11 @@
 // Copyright Browning Keith Smith 2021
 
-
+#include "DrawDebugHelpers.h"
+#include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
 #include "Grabber.h"
+
+#define OUT
 
 // Sets default values for this component's properties
 UGrabber::UGrabber()
@@ -19,8 +23,7 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	UE_LOG(LogTemp, Warning, TEXT("Grabber is ready to grab ;)"));
 }
 
 
@@ -29,6 +32,20 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	FVector ViewPosition;
+	FRotator ViewRotation;
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(OUT ViewPosition, OUT ViewRotation);
+
+	FVector LineTraceEnd = ViewPosition + ViewRotation.Vector() * Reach;
+	DrawDebugLine(
+		GetWorld(),
+		ViewPosition,
+		LineTraceEnd,
+		FColor(255, 0, 0, 255),
+		false,
+		(-1.0F),
+		(uint8)'\000',
+		(3.0F)
+	);
 }
 
