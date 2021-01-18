@@ -24,8 +24,10 @@ void UOpenDoor::BeginPlay()
 
 	ActorThatOpensDoor = GetWorld()->GetFirstPlayerController()->GetPawn();
 
-	StartingYaw = GetOwner()->GetActorRotation().Yaw;
-	OpenAngle += StartingYaw;
+	ClosedAngle = GetOwner()->GetActorRotation().Yaw;
+	TargetPosition = ClosedAngle;
+	AnimationSpeed = DoorCloseSpeed;
+	OpenAngle += ClosedAngle;
 
 	if (!PressurePlate)
 	{
@@ -41,25 +43,22 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 	if (PressurePlate && PressurePlate->IsOverlappingActor(ActorThatOpensDoor))
 	{
-		OpenDoor(DeltaTime, DoorOpenSpeed);
+		TargetPosition = OpenAngle;
+		AnimationSpeed = DoorOpenSpeed;
 		DoorLastOpened = GetWorld()->GetTimeSeconds();
 	}
 	else if (GetWorld()->GetTimeSeconds() > DoorLastOpened + DoorOpenDelay)
 	{
-		CloseDoor(DeltaTime, DoorCloseSpeed);
+		TargetPosition = ClosedAngle;
+		AnimationSpeed = DoorCloseSpeed;
 	}
+
+	AnimateDoor(DeltaTime);
 }
 
-void UOpenDoor::OpenDoor(float DeltaTime, float Duration)
+void UOpenDoor::AnimateDoor(float DeltaTime)
 {
-	float NewYaw = FMath::Lerp(GetOwner()->GetActorRotation().Yaw, OpenAngle, DeltaTime * Duration);
-	FRotator NewRotation = {0.f, NewYaw, 0.f};
-	GetOwner()->SetActorRotation(NewRotation);
-}
-
-void UOpenDoor::CloseDoor(float DeltaTime, float Duration)
-{
-	float NewYaw = FMath::Lerp(GetOwner()->GetActorRotation().Yaw, StartingYaw, DeltaTime * Duration);
+	float NewYaw = FMath::Lerp(GetOwner()->GetActorRotation().Yaw, TargetPosition, DeltaTime * AnimationSpeed);
 	FRotator NewRotation = {0.f, NewYaw, 0.f};
 	GetOwner()->SetActorRotation(NewRotation);
 }

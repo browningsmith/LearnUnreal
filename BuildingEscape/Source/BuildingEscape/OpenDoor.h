@@ -24,11 +24,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void OpenDoor(float DeltaTime, float Duration);
-	void CloseDoor(float DeltaTime, float Duration);
+	void AnimateDoor(float DeltaTime);
 
 private:
-	float StartingYaw;
+	float ClosedAngle;
+	float TargetPosition;
+	float AnimationSpeed;
 	float DoorLastOpened = 0.f;
 
 	UPROPERTY(EditAnywhere)
