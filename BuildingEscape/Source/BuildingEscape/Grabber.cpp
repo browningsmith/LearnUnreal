@@ -36,6 +36,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	FRotator ViewRotation;
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(OUT ViewPosition, OUT ViewRotation);
 
+	// Draw Debug Line
 	FVector LineTraceEnd = ViewPosition + ViewRotation.Vector() * Reach;
 	DrawDebugLine(
 		GetWorld(),
@@ -47,5 +48,24 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		(uint8)'\000',
 		(3.0F)
 	);
+
+	// Ray Cast out to test for objects to grab
+	FHitResult Hit;
+	FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetOwner());
+	GetWorld()->LineTraceSingleByObjectType(
+		OUT Hit,
+		ViewPosition,
+		LineTraceEnd,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+		TraceParams
+	);
+	if (Hit.bBlockingHit)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("We hit %s!"), *(Hit.Actor->GetName()));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("We missed!"));
+	}
 }
 
