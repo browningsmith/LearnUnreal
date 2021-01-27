@@ -23,7 +23,30 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("Grabber is ready to grab ;)"));
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	if (!PhysicsHandle)
+	{
+		UE_LOG(LogTemp, Error, TEXT(
+			"Actor %s does not have a PhysicsHandleComponent.\n"
+			"Make sure a PhysicsHandle component is added to %s."
+		), *GetOwner()->GetName(), *GetOwner()->GetName());
+	}
+
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	if (!InputComponent)
+	{
+		UE_LOG(
+			LogTemp, Error, TEXT("Actor %s could not find InputComponent. Make sure Input is enabled."),
+			*GetOwner()->GetName()
+		);
+	}
+	else
+	{
+		UE_LOG(
+			LogTemp, Error, TEXT("Actor %s found InputComponent."),
+			*GetOwner()->GetName()
+		);
+	}
 }
 
 
@@ -63,9 +86,9 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	{
 		UE_LOG(LogTemp, Warning, TEXT("We hit %s!"), *(Hit.Actor->GetName()));
 	}
-	else
-	{
-		UE_LOG(LogTemp, Display, TEXT("We missed!"));
-	}
+	// else
+	// {
+	// 	UE_LOG(LogTemp, Display, TEXT("We missed!"));
+	// }
 }
 
