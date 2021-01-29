@@ -1,9 +1,10 @@
 // Copyright Browning Keith Smith 2021
 
+#include "Grabber.h"
+
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
-#include "Grabber.h"
 
 #define OUT
 
@@ -43,9 +44,10 @@ void UGrabber::BeginPlay()
 	else
 	{
 		UE_LOG(
-			LogTemp, Error, TEXT("Actor %s found InputComponent."),
+			LogTemp, Warning, TEXT("Actor %s found InputComponent."),
 			*GetOwner()->GetName()
 		);
+		InputComponent->BindAction(TEXT("Grab"), IE_Pressed, this, &UGrabber::Grab);
 	}
 }
 
@@ -90,5 +92,10 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	// {
 	// 	UE_LOG(LogTemp, Display, TEXT("We missed!"));
 	// }
+}
+
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grabbing key pressed!"));
 }
 
